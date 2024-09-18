@@ -16,9 +16,6 @@
         const init = async () => {
 
         const serializer = (type, element, content, children) => {
-          // console.log({element, children})
-          // "fff".join()
-
           if (element.type === 'preformatted') {
             return `<code>${children}</code>`
           }
