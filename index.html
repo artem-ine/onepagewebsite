@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Prismic Vanilla JavaScript App</title>
+    <link rel="stylesheet" href="style.css">
+    <script type='module'>
+        import * as prismic from 'https://cdn.skypack.dev/@prismicio/client'
+    
+        const repositoryName = 'onepagewebsite'
+        const routes = [
+          { type: 'article', path: '/:uid' },
+          { type: 'home', path: '/' },
+        ]
+        const client = prismic.createClient(repositoryName, { routes })
+
+        const init = async () => {
+
+        const htmlSerializer = (type, element, content, children) => {
+            if (element.data?.label === 'pre') {
+                return `<code>${children.join('')}<code/>`
+            }
+        return null
+        }
+        
+        const prismicArticle = await client.getSingle('article')
+        const { title, description } = prismicArticle.data
+        const titleHTML = prismic.asHTML(title, { htmlSerializer })
+        const descriptionHTML = prismic.asHTML(description, { htmlSerializer })
+
+        const javaScriptDate = prismic.asDate(prismicArticle.data.last_publication_date, { htmlSerializer })
+        const options = {
+            year: 'numeric',
+            month: 'numeric',
+            day: 'numeric',
+            };
+        const formattedDate = javaScriptDate.toLocaleDateString('fr-FR', options)
+
+        const { src, srcset } = prismic.asImageWidthSrcSet(prismicArticle.data.article_image, { duotone: ["000080","FA8072"] })
+            
+        const image = `
+            <img
+                src="${src}"
+                srcset="${srcset}"
+                alt="${prismicArticle.data.article_image.alt}"
+            />`
+
+        const text = document.getElementById('text')
+        text.innerHTML = titleHTML + descriptionHTML
+
+        const photo = document.getElementById('photo')
+        photo.innerHTML = image + formattedDate
+        }
+
+    init()
+    </script>
+  </head>
+  <body>
+    <div id='text'></div>
+    <div id='photo'></div>
+</body>
+</html>

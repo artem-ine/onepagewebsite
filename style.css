@@ -1,0 +1,23 @@
+body {
+    margin-top: 100px;
+    margin-bottom: 100px;
+    margin-right: 150px;
+    margin-left: 150px;
+    align-items: center;
+    display: flex;
+    flex-direction: column;
+  }
+  
+
+img {
+    max-width: 600px;
+}
+
+p {
+    text-align: justify;
+}
+
+h2 {
+    text-align: center;
+}
+
