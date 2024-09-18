@@ -3,7 +3,6 @@
   <head>
     <title>Prismic Vanilla JavaScript App</title>
     <link rel="stylesheet" href="style.css">
-    <script async defer src="https://static.cdn.prismic.io/prismic.js?new=true&repo=onepagewebsite"></script>
     <script type='module'>
         import * as prismic from 'https://cdn.skypack.dev/@prismicio/client'
     
@@ -16,19 +15,23 @@
 
         const init = async () => {
 
-        const htmlSerializer = (type, element, content, children) => {
-            if (element.data?.label === 'pre') {
-                return `<code>${children.join('')}<code/>`
-            }
-        return null
+        const serializer = (type, element, content, children) => {
+          // console.log({element, children})
+          // "fff".join()
+
+          if (element.type === 'preformatted') {
+            return `<code>${children}</code>`
+          }
+
+          return null
         }
         
         const prismicArticle = await client.getSingle('article')
         const { title, description } = prismicArticle.data
-        const titleHTML = prismic.asHTML(title, { htmlSerializer })
-        const descriptionHTML = prismic.asHTML(description, { htmlSerializer })
+        const titleHTML = prismic.asHTML(title, { serializer })
+        const descriptionHTML = prismic.asHTML(description, { serializer })
 
-        const javaScriptDate = prismic.asDate(prismicArticle.data.last_publication_date, { htmlSerializer })
+        const javaScriptDate = prismic.asDate(prismicArticle.data.last_publication_date, { serializer })
         const options = {
             year: 'numeric',
             month: 'numeric',
