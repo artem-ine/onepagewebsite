@@ -44,7 +44,7 @@
       const titleHTML = prismic.asHTML(title, { serializer })
       const descriptionHTML = prismic.asHTML(description, { serializer })
       
-      const javaScriptDate = prismic.asDate(prismicArticle.data.last_publication_date, { serializer })
+      const javaScriptDate = prismic.asDate(prismicArticle.data.last_publication_date)
       const options = {
         year: 'numeric',
         month: 'numeric',
@@ -65,7 +65,7 @@
       text.innerHTML = titleHTML + descriptionHTML
       
       const photo = document.getElementById('photo')
-      photo.innerHTML = image + formattedDate
+      photo.innerHTML = image + `<p>${formattedDate}</p>`
     }
     
     init()
